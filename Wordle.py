@@ -2,7 +2,7 @@
 # Name: Lola Cordero
 # Collaborators (if any): Went to the Quad Center for milestone 0
 # GenAI Transcript (if any):
-# Estimated time spent (hr): 3-4
+# Estimated time spent (hr): 4-5
 # Description of any added extensions:
 ########################################
 
@@ -16,14 +16,18 @@ def wordle():
     secretWord= "Tacos"
 
     def enter_action():
-        if (len(guess(gw.get_current_row())) < 5) and (check_if_english() == True):
-            gw.show_message("Word must be at least 5 letters!") #This is will check to make sure word is more then 5 letters
-        if check_if_english() == False:
-            gw.show_message("Not in Word List Buddy-ol-pal") #This will make sure that the word is in the english list
-        else:
-            if gw.get_current_row!=N_ROWS:
+        if gw.get_current_row!= N_ROWS:
+            if (len(guess(gw.get_current_row())) < 5) and (check_if_english() == True):
+                gw.show_message("Word must be at least 5 letters!") #This is will check to make sure word is more then 5 letters
+            if check_if_english() == False:
+                gw.show_message("Not in Word List Buddy-ol-pal") #This will make sure that the word is in the english list
+            else:
                 color_squares(guess(gw.get_current_row()))
+                check_if_won(guess(gw.get_current_row()))
                 gw.set_current_row(gw.get_current_row() + 1) #If guess meets criteria then it will proceed
+        else:
+            gw.show_message("You'll get it next time! The word was:" + secretWord)
+                
 
 
         # add check_color function!!
@@ -47,10 +51,10 @@ def wordle():
         temp=""
         for i in range(N_COLS):
             temp= temp + gw.get_square_letter(row,i)
-        return temp
+        return temp.lower()
     
     def color_squares(guess):
-        lettersLeft= secretWord
+        lettersLeft= secretWord.lower()
         for i in range (N_COLS):
             if guess[i] == lettersLeft[i]:
                 lettersLeft=lettersLeft[:i]+" "+lettersLeft[i+1:]
@@ -63,14 +67,14 @@ def wordle():
                 else:
                     gw.set_square_color(gw.get_current_row(),i,MISSING_COLOR)
 
+    def check_if_won(guess):
+        if guess == secretWord.lower():
+            gw.show_message("You won! Congratulations")
+            gw.set_current_row(N_ROWS-1)
+
 
             
 
-
-
-# Startup boilerplate
-if __name__ == "__main__":
-    wordle()
 
 
 # Startup boilerplate
